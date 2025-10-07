@@ -4,7 +4,7 @@ end
 local httpService = cloneref(game:GetService('HttpService'))
 
 local function wipeFolders()
-    for _, v in {'catware', 'catware/games', 'catware/gui', 'catware/libraries'} do
+    for _, v in {'catware', 'catware/games', 'catware/assets', 'catware/libs'} do
         if isfolder(v) then
             for x, d in listfiles(v) do
                 if string.find(d, 'commit.txt') then continue end
@@ -31,7 +31,7 @@ local function downloadFile(file, read)
     return readfile(file)
 end
 
-for _, v in {'catware', 'catware/games', 'catware/gui', 'catware/assets', 'catware/configs', 'catware/libraries'} do
+for _, v in {'catware', 'catware/games', 'catware/assets', 'catware/assets', 'catware/configs', 'catware/libs'} do
     if not isfolder(v) then
         makefolder(v)
     end
@@ -47,5 +47,5 @@ end
 
 repeat task.wait() until isfile('catware/commit.txt')
 
-downloadFile('catware/gui/interface.lua', false)
+downloadFile('catware/assets/interface.lua', false)
 loadstring(downloadFile('catware/main.lua'))()
