@@ -11,3 +11,8 @@ CatWare is a Roblox client modification that allows you to experience the true p
 ```luau
 loadstring(game:HttpGet("https://raw.githubusercontent.com/catwareroblox/catware/main/Installer.lua", true))()
 ```
+## Contributers
+@spring67 - Gui Libary Inspiration
+
+## Developers
+@vxrm - Project Lead/Main Developer
