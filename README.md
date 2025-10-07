@@ -2,7 +2,7 @@
 
 ![CatWare Roblox Modification Logo](https://raw.githubusercontent.com/catwareroblox/catware/refs/heads/main/CatWare%20Logo.png)
 
-CatWare is a lightweight script for Roblox that allows developers to quickly create custom interfaces with ease.
+CatWare is a Roblox client modification that allows you to experience the true potential of the game using exploited vulerabilities.
 
 ## Installation
 
