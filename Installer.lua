@@ -4,7 +4,7 @@ end
 local httpService = cloneref(game:GetService('HttpService'))
 
 local function wipeFolders()
-    for _, v in {'catware', 'catwaregames', 'catwaregui'} do
+    for _, v in {'catware', 'catware/games', 'catware/gui', 'catware/libraries'} do
         if isfolder(v) then
             for x, d in listfiles(v) do
                 if string.find(d, 'commit.txt') then continue end
@@ -18,9 +18,9 @@ local function wipeFolders()
 end
 
 local function downloadFile(file, read)
-    url = file:gsub('catware', '')
+    url = file:gsub('catware/', '')
     if not isfile(file) then
-        writefile(file, game:HttpGet('https://raw.githubusercontent.com/catwareroblox/catware/'..readfile('catwarecommit.txt')..'/'..url))
+        writefile(file, game:HttpGet('https://raw.githubusercontent.com/catwareroblox/catware/'..readfile('catware/commit.txt')..'/'..url))
     end
 
     if read ~= nil and read == false then
@@ -31,21 +31,21 @@ local function downloadFile(file, read)
     return readfile(file)
 end
 
-for _, v in {'catware', 'catwaregames', 'catwaregui'} do
+for _, v in {'catware', 'catware/games', 'catware/gui', 'catware/assets', 'catware/configs', 'catware/libraries'} do
     if not isfolder(v) then
         makefolder(v)
     end
 end
 
 local commit = httpService:JSONDecode(game:HttpGet('https://api.github.com/repos/catwareroblox/catware/commits'))[1].sha
-if not isfile('catwarecommit.txt') then
-    writefile('catwarecommit.txt', commit)
-elseif readfile('catwarecommit.txt') ~= commit then
+if not isfile('catware/commit.txt') then
+    writefile('catware/commit.txt', commit)
+elseif readfile('catware/commit.txt') ~= commit then
     wipeFolders()
-    writefile('catwarecommit.txt', commit)
+    writefile('catware/commit.txt', commit)
 end
 
-repeat task.wait() until isfile('catwarecommit.txt')
+repeat task.wait() until isfile('catware/commit.txt')
 
-downloadFile('catwaregui/catware.lua', false)
-loadstring(downloadFile('catwaremain.lua'))()
+downloadFile('catware/gui/interface.lua', false)
+loadstring(downloadFile('catware/main.lua'))()
