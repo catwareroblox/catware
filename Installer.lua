@@ -1,50 +1,51 @@
-local base = "https://raw.githubusercontent.com/catwareroblox/catware/refs/heads/main/"
+local cloneref = cloneref or function(obj)
+    return obj
+end
+local httpService = cloneref(game:GetService('HttpService'))
 
-local function getDownload(file)
-    file = file:gsub('CatWare/', '')
-
-    local suc, ret = pcall(function()
-        return game:HttpGet(base .. file)
-    end)
-
-    return suc and ret or 'print("Failed to get ' .. file..'")'
+local function wipeFolders()
+    for _, v in {'catware', 'catwaregames', 'catwaregui'} do
+        if isfolder(v) then
+            for x, d in listfiles(v) do
+                if string.find(d, 'commit.txt') then continue end
+                
+                if not isfolder(d) then
+                    delfile(d)
+                end
+            end
+        end
+    end
 end
 
-local function downloadFile(file)
-    file = 'CatWare/' .. file
-
+local function downloadFile(file, read)
+    url = file:gsub('catware', '')
     if not isfile(file) then
-        writefile(file, getDownload(file))
+        writefile(file, game:HttpGet('https://raw.githubusercontent.com/catwareroblox/catware/'..readfile('catwarecommit.txt')..'/'..url))
+    end
+
+    if read ~= nil and read == false then
+        return
     end
 
     repeat task.wait() until isfile(file)
-
     return readfile(file)
 end
 
-local function debugDownloadSuccess(file)
-    local File = downloadFile(file)
-
-    if isfile('CatWare/' .. file) then
-        print('[CatWare]: Successfully downloaded', file)
-    else
-        print('[CatWare]: Failed to download', file)
-    end
-
-    return File
-end
-
-for i,v in {'CatWare', 'CatWare/Games', 'CatWare/Configs'} do
+for _, v in {'catware', 'catwaregames', 'catwaregui'} do
     if not isfolder(v) then
         makefolder(v)
     end
 end
 
-debugDownloadSuccess('CatWareLibary.lua')
-
-local Games = {'BedwarZ'}
-for i,v in Games do
-    debugDownloadSuccess('Games/'..v..'.lua')
+local commit = httpService:JSONDecode(game:HttpGet('https://api.github.com/repos/catwareroblox/catware/commits'))[1].sha
+if not isfile('catwarecommit.txt') then
+    writefile('catwarecommit.txt', commit)
+elseif readfile('catwarecommit.txt') ~= commit then
+    wipeFolders()
+    writefile('catwarecommit.txt', commit)
 end
 
-return loadstring(debugDownloadSuccess('Main.lua'))()
+repeat task.wait() until isfile('catwarecommit.txt')
+
+downloadFile('catwaregui/catware.lua', false)
+loadstring(downloadFile('catwaremain.lua'))()
