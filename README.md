@@ -13,6 +13,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/catwareroblox/catware
 ```
 ## Contributers
 @spring67 - Gui Libary Inspiration
+@sus - Gui Libary, CatWare Base.
 
 ## Developers
 @vxrm - Project Lead/Main Developer
