@@ -1,5 +1,4 @@
-local baseOld = "https://raw.githubusercontent.com/catwareroblox/catware/refs/heads/main/"
-local base = "http://github.com/catwareroblox/catware/refs/heads/main/"
+local base = "https://raw.githubusercontent.com/catwareroblox/catware/refs/heads/main//"
 
 local function getDownload(file)
     file = file:gsub('idk/', '')
