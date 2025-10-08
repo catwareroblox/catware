@@ -1,4 +1,80 @@
 local Library = loadfile("idk/Library.lua")()
+local Animations = loadfile("idk/libraries/Animations.lua")()
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local Ping = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue() / 1000
+local LightingService = game:GetService("Lighting")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local CollectionService = game:GetService("CollectionService")
+local workspace = game:GetService("Workspace")
+local camera = workspace.Camera
+local viewmodel = camera:WaitForChild("Viewmodel")
+local C1 = viewmodel:WaitForChild("RightHand"):WaitForChild("RightWrist").C1
+local C0 = viewmodel:WaitForChild("RightHand"):WaitForChild("RightWrist").C0
+local lplr = Players.LocalPlayer
+
+local NetManaged = ReplicatedStorage.rbxts_include.node_modules["@rbxts"].net.out._NetManaged
+local BlockEngine = ReplicatedStorage.rbxts_include.node_modules["@easy-games"]["block-engine"].node_modules["@rbxts"].net.out._NetManaged
+
+local Combat = Library.library.CreateTab("Combat")
+local Player = Library.library.CreateTab("Player")
+local Movement = Library.library.CreateTab("Movement")
+local Render = Library.library.CreateTab("Render")
+local Utility = Library.library.CreateTab("Utility")
+
+local isnetworkowner = isnetworkowner or function(part)
+    return true
+end
+
+BedwarZ = {
+    SwordHit = ReplicatedStorage.Remotes.ItemsRemotes.SwordHit,
+    PlaceBlock = ReplicatedStorage.Remotes.ItemsRemotes.PlaceBlock,
+    EquipTool = ReplicatedStorage.Remotes.ItemsRemotes.EquipTool,
+    MineBlock = ReplicatedStorage.Remotes.ItemsRemotes.MineBlock,
+    DropItem = ReplicatedStorage.Remotes.ItemsRemotes.DropItem,
+    ShootProjectile = ReplicatedStorage.Remotes.ItemsRemotes.ShootProjectile,
+    VeloUtils = ReplicatedStorage.Modules.VelocityUtils,
+
+    getMap = function()
+        return ReplicatedStorage.GameInfo.Map.Value
+    end,
+}
+
+local Fly
+Fly = Movement:CreateModule({
+    ["Name"] = "Fly",
+    ["Function"] = function(callback)
+        if callback then
+            if not Fly.Connection then
+                Fly.Connection = RunService.RenderStepped:Connect(function()
+                    if isAlive(lplr) then
+                        local Velocity = lplr.Character.PrimaryPart.Velocity
+                        local setY = 0
+                        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                            setY = 50
+                        elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+                            setY = -50
+                        end
+                        lplr.Character.PrimaryPart.Velocity = Vector3.new(Velocity.X, setY, Velocity.Z)
+                    end
+                end)
+            end
+        else
+            if Fly.Connection then
+                Fly.Connection:Disconnect()
+                Fly.Connection = nil
+            end
+        end
+    end
+})
+
+
+-- \\ Old src/spring's src
+--[[
+local Library = loadfile("idk/Library.lua")()
 
 local GuiLibrary = loadfile("idk/Library.lua")()
 
@@ -770,3 +846,5 @@ Velocity = Combat:CreateModule({
         end
     end
 })
+    
+]]

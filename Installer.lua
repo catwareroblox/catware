@@ -34,15 +34,15 @@ local function debugDownloadSuccess(file)
     return File
 end
 
-for i,v in {'idk', 'idk/games', 'idk/configs', 'libraries'} do
+for i,v in {'idk', 'idk/games', 'idk/configs', 'idk/libraries'} do
     if not isfolder(v) then
         makefolder(v)
     end
 end
 
-debugDownloadSuccess('GuiLibrary.lua')
+debugDownloadSuccess('Libary.lua')
 
-local Games = {'bedwarZ', 'bedwars'}
+local Games = {'bedwarZ', 'bedwars', 'washiez'}
 for i,v in Games do
     debugDownloadSuccess('Games/'..v..'.lua')
 end
